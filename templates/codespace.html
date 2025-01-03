@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Jam - Codespace</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">    
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+            text-align: center;
+            background-color: var(--var-background-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .section {
+            flex: 1;
+            min-width: 250px;
+            /* Minimum width for responsiveness */
+            max-width: 500px;
+            /* Maximum width for larger screens */
+            height: 300px;
+            /* Fixed height for squares */
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            background-color: #fff;
+            color: #fff;
+            font-size: 1.5em;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section a:hover {
+            background-color: var(--var-primary-color);
+            color: white;
+            scale: 1.05;
+            transition: ease 0.8s;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Container for sections -->
+    {% include 'home_modal.html' %}
+    <h1>Choose terminal</h1>
+    <div class="container">
+        <!-- SQL Section -->
+        <div class="section">
+            <a href="/codespace/sql"><img src="/static/sql.png" height="200px"></a>
+        </div>
+
+        <!-- Python Section -->
+        <div class="section">
+            <a href="/codespace/python"><img src="/static/python.png" alt="" height="200px"></a>
+        </div>
+    </div>
+
+    <!-- Include the shortcut modal -->
+    {% include 'shortcut_modal.html' %}
+</body>
+</html>

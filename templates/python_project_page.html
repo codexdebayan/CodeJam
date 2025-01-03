@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project_name | upper }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">    
+
+    <style>
+        /* General page layout */
+        :root {
+            --var-primary-color: #23cffb;
+            --var-offset-color: #00b4e6;
+            --var-background-color: #f5f5f5;
+
+        }
+
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: var(--var-background-color);
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            width: 90%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: left;
+            margin-top: 5px;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .header pre {
+            font-size: 1.1em;
+            white-space: pre-wrap;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: row;
+            height: calc(100% - 100px);
+        }
+
+        /* Left column for code display */
+        .code-column {
+            width: 50%;
+            padding-right: 20px;
+            font-size: 1.2em;
+        }
+
+        .code-column h2 {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        /* Textarea for code editor */
+        .code-column textarea {
+            width: 100%;
+            height: 400px;
+            padding: 15px;
+            background-color: #333;
+            color: #fff;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 1.1em;
+            border: none;
+            white-space: pre-wrap;
+            overflow-y: scroll;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            resize: none;
+        }
+
+        /* Right column for console and button */
+        .right-column {
+            width: 50%;
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .run-button {
+            display: block;
+            margin-left: 20px;
+            padding: 10px 10px;
+            background-color: var(--var-primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            height: 50px;
+        }
+
+        .console {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            height: 100%;
+            overflow-y: scroll;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            white-space: pre-wrap;
+            font-size: 1.2em;
+            max-height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'home_modal.html' %}
+    {% include 'back_modal.html' %}
+
+    <!-- Header section for question display -->
+    <div class="header">
+        <h2>Question: {{ project_name | upper }}</h2>
+        <pre>{{ project_value }}</pre>
+    </div>
+
+    <!-- Main content container -->
+    <div class="container">
+
+        <!-- Left Column: Editable Code Display -->
+        <div class="code-column">
+            <h2>Code:</h2>
+            <!-- Textarea to allow users to edit the code -->
+            <textarea id="code-editor" spellcheck="false">{{ code_content }}</textarea>
+        </div>
+
+        <!-- Right Column: Run Button and Console -->
+        <div class="right-column">
+            <div style="display: flex;">
+                <h2>Output:</h2>
+                <button class="run-button" onclick="runCode()">Run</button>
+            </div>
+            <div class="console" id="console-output">
+                <pre>Console Output will be displayed here...</pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function runCode() {
+            // Get the updated code from the textarea
+            const codeContent = document.getElementById("code-editor").value;
+            const projectName = "{{ project_name }}";
+
+            // Send AJAX request to run the Python file with updated code
+            fetch(`/run_code/${projectName}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ code_content: codeContent })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Update the console output with the result
+                    document.getElementById("console-output").innerHTML = '<pre>' + data.output + '</pre>';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById("console-output").innerHTML = '<pre>Error running the code</pre>';
+                });
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && event.key === 'Enter') {
+                // Trigger the runCode function when Ctrl + Enter is pressed
+                runCode();
+            } else if (event.ctrlKey && event.key === 'Backspace') {
+                // Check if there is a history entry to go back to
+                if (window.history.length > 1) {
+                    window.history.back(); // Go back to the previous route
+                } else {
+                    window.location.href = '/'; // Redirect to home if no history
+                }
+            }
+        });
+    </script>
+
+    {% include 'shortcut_modal.html' %}
+</body>
+
+</html>

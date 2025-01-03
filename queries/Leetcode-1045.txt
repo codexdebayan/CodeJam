@@ -1,0 +1,27 @@
+-- Create the Product table
+
+-- CREATE TABLE Product (
+-- product_key INT PRIMARY KEY);
+
+-- Create the Customer table
+
+-- CREATE TABLE Customer (
+--    customer_id INT,
+--    product_key INT,
+--    FOREIGN KEY (product_key) REFERENCES Product --(product_key)
+--
+-- Insert data into the Product table
+-- INSERT INTO Product (product_key) VALUES (5);
+-- INSERT INTO Product (product_key) VALUES (6);
+
+-- Insert data into the Customer table
+-- INSERT INTO Customer (customer_id, product_key) -- VALUES (1, 5);
+-- INSERT INTO Customer (customer_id, product_key) -- VALUES (2, 6);
+-- INSERT INTO Customer (customer_id, product_key) -- VALUES (3, 5);
+-- INSERT INTO Customer (customer_id, product_key) -- VALUES (3, 6);
+-- INSERT INTO Customer (customer_id, product_key) -- VALUES (1, 6);
+
+select customer_id 
+from customer
+group by customer_id
+having count(distinct product_key) = (select count(*) from product);

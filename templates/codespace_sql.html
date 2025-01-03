@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project_name | upper }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">    
+
+    <style>
+        /* General page layout */
+        :root {
+            --var-primary-color: #23cffb;
+            --var-offset-color: #00b4e6;
+            --var-background-color: #f5f5f5;
+
+        }
+
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: var(--var-background-color);
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            width: 90%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: left;
+            margin-top: 5px;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 1.5em;
+            position: -10px;
+        }
+
+        .header pre {
+            font-size: 1.1em;
+            white-space: pre-wrap;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: row;
+            height: calc(100% - 100px);
+            /* Subtract header height */
+        }
+
+        /* Left column for SQL query display */
+        .code-column {
+            width: 50%;
+            padding-right: 20px;
+            font-size: 1.2em;
+        }
+
+        .code-column h2 {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .code-column textarea {
+            background-color: #333;
+            color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            height: 100%;
+            overflow-y: scroll;
+            white-space: pre-wrap;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            margin: 0;
+            max-height: 415px;
+            width: 100%;
+            font-size: 1.2em;
+            border: none;
+            resize: none;
+        }
+
+        /* Right column for console and button */
+        .right-column {
+            width: 50%;
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .run-button,
+        .save-button {
+            display: block;
+            margin-left: 20px;
+            padding: 10px 10px;
+            background-color: var(--var-primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            height: 50px;
+        }
+
+        .save-button {
+            background-color: var(--var-primary-color);
+        }
+
+        .console {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            height: 100%;
+            overflow-y: scroll;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            white-space: pre-wrap;
+            font-size: 1.2em;
+            max-height: 400px;
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .result-table th,
+        .result-table td {
+            border: 1px solid #fff;
+            padding: 10px;
+            text-align: left;
+            background-color: #444;
+        }
+
+        .result-table th {
+            background-color: #555;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'home_modal.html' %}
+    {% include 'back_modal.html' %}
+
+    <!-- Header section for SQL question display -->
+    <div class="header">
+        <h2>Jam the space with SQL 
+            <span><img src="/static/sql.png" alt="" height="24px" draggable="false"></span>
+        </h2>
+    </div>
+
+    <!-- Main content container -->
+    <div class="container">
+
+        <!-- Left Column: SQL Query Display -->
+        <div class="code-column">
+            <h2>Query:</h2>
+            <textarea spellcheck="false" id="query-content">{{ query_content }}</textarea>
+        </div>
+
+        <!-- Right Column: Run Button and Console -->
+        <div class="right-column">
+            <div style="display: flex;">
+                <h2>Output:</h2>
+                <button class="save-button" onclick="saveQuery()">Save Query</button>
+                <button class="run-button" onclick="runQuery()">Run Query</button>
+            </div>
+            <div class="console" id="console-output">
+                <pre>Console Output will be displayed here...</pre>
+               
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function saveQuery() {
+            const queryContent = document.getElementById("query-content").value;
+
+            fetch(`/query_run/codespace-sql`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ query_content: queryContent })
+            })
+                .then(response => response.json())
+                .then(data =>  {
+                    alert(data.message);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error saving the query.');
+                });
+        }
+
+        function runQuery() {
+
+            fetch(`/query_run/codespace-sql`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const consoleOutput = document.getElementById("console-output");
+
+                    let table = '<table class="result-table">';
+
+                    table += '<thead><tr>';
+                    data.columns.forEach(col => {
+                        table += `<th>${col}</th>`;
+                    });
+                    table += '</tr></thead>';
+
+                    table += '<tbody>';
+                    data.rows.forEach(row => {
+                        table += '<tr>';
+                        row.forEach(value => {
+                            table += `<td>${value}</td>`;
+                        });
+                        table += '</tr>';
+                    });
+                    table += '</tbody></table>';
+
+                    consoleOutput.innerHTML = table;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById("console-output").innerHTML = '<pre>Error running the query</pre>';
+                });
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && event.key === 'Enter') {
+                runQuery();
+            }
+            if (event.ctrlKey && event.key === 'Backspace') {
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.location.href = '/';
+                }
+            }
+        });
+    </script>
+    {% include 'shortcut_modal.html' %}
+
+</body>
+
+</html>

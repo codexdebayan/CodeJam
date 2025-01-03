@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Projects</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">    
+
+    <style>
+        :root {
+            --var-primary-color: #23cffb;
+            --var-offset-color: #00b4e6;
+            --var-background-color: #f5f5f5;
+
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: var(--var-background-color);
+        }
+
+        h1 {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        button {
+            width: 300px;
+            /* Fixed width for all buttons */
+            height: 50px;
+            /* Fixed height for all buttons */
+            font-size: 1.2em;
+            background-color: var(--var-primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--var-offset-color);
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'home_modal.html' %}
+    {% include 'codespace_modal.html' %}
+    <div>
+        <h1>Python Projects</h1>
+        <ul>
+            {% for project in projects %}
+            <li>
+                <a href="{{ url_for('python_project_page', name=project) }}">
+                    <button>{{ project }}</button>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- Include the shortcut modal -->
+    {% include 'shortcut_modal.html' %}
+
+    <script>
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && event.key === 'Backspace') {
+                // Check if there is a history entry to go back to
+                if (window.history.length > 1) {
+                    window.history.back(); // Go back to the previous route
+                } else {
+                    window.location.href = '/'; // Redirect to home if no history
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

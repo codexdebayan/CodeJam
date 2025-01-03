@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codespace - Python</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='codespace_python.css') }}">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">    
+
+</head>
+
+<body>
+    {% include 'home_modal.html' %}
+    {% include 'back_modal.html' %}
+
+    <!-- Header section for question display -->
+    <div class="header">
+        <h2>Jam the space with Python <span><img src="/static/python.png" alt="" height="24px" draggable="false"></span>
+        </h2>
+    </div>
+
+    <!-- Main content container -->
+    <div class="container">
+        <!-- Left Column: Editable Code Display -->
+        <div class="code-column">
+            <h2>Code:</h2>
+            <textarea id="code-editor" spellcheck="false" style="tab-size: 4;">{{ code_content }}</textarea>
+        </div>
+
+
+        <!-- Right Column: Run Button and Console -->
+        <div class="right-column">
+            <div style="display: flex; align-items: center;">
+                <h2>Output:</h2>
+                <button class="run-button" onclick="runCode()">Run</button>
+                <button class="run-button" onclick="clearConsole()" style="margin-left: 10px;">Clear</button>
+                <div id="loading" style="display:none;margin-left:15px;">Running...</div>
+                <!-- User Input Field -->
+
+            </div>
+
+            <!-- Console Output Area -->
+            <textarea class="console" id="console-output" readonly>Console Output will be displayed here...</textarea>
+            <!-- User Input Field -->
+            <div class="input-field">
+                <label for="user-input">User Input:</label>
+                <textarea id="user-input" placeholder="Enter input for the code" rows="4"
+                    style="width: 100%; padding: 10px; font-size: 1.1em; border-radius: 5px; border: 1px solid #ccc; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);"></textarea>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+        function runCode() {
+            const codeContent = document.getElementById("code-editor").value;
+            const userInput = document.getElementById("user-input").value; // Capture the input value
+            document.getElementById("loading").style.display = "block"; // Show loading indicator
+
+            fetch(`/codespace/python`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ code_content: codeContent, user_input: userInput }) // Send code and user input
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("loading").style.display = "none"; // Hide loading
+                    document.getElementById("console-output").value = data.output;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById("loading").style.display = "none"; // Hide loading
+                    document.getElementById("console-output").value = 'Error running the code';
+                });
+        }
+
+        function clearConsole() {
+            document.getElementById("console-output").value = '';
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && event.key === 'Enter') {
+                runCode();
+            } else if (event.ctrlKey && event.key === 'Backspace') {
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.location.href = '/';
+                }
+            }
+        });
+
+        document.getElementById("code-editor").addEventListener("keydown", function (event) {
+            if (event.key === "Tab") {
+                event.preventDefault();
+                const textarea = event.target;
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                textarea.value = textarea.value.substring(0, start) + "    " + textarea.value.substring(end);
+                textarea.selectionStart = textarea.selectionEnd = start + 4;
+            }
+        });
+    </script>
+
+    {% include 'shortcut_modal.html' %}
+</body>
+
+</html>

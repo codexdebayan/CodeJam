@@ -1,0 +1,9 @@
+Flask
+Flask-cors
+mysql-connector-python
+pandas
+python-dotenv
+google-generativeai
+pypdf
+grpcio
+grpcio-tools

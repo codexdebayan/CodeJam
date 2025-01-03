@@ -1,0 +1,25 @@
+-- CREATE TABLE Employee_177 (
+--     id INT PRIMARY KEY,
+--     salary INT
+-- );
+-- 
+-- INSERT INTO Employee_177 (id, salary)
+-- VALUES
+-- (1, 100),
+-- (2, 200),
+-- (3, 300);
+
+
+--CREATE FUNCTION getNthHighestSalary(N INT) RETURNS 
+-- INT
+-- BEGIN
+ 
+-- SET N=N-1;
+ 
+-- RETURN (
+--      SELECT DISTINCT salary FROM Employee_177 ORDER -- BY salary DESC
+--     LIMIT 1 OFFSET N      
+-- );
+-- END;
+
+SELECT * FROM Employee_177;

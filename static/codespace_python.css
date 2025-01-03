@@ -1,0 +1,133 @@
+/* General page layout */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: var(--var-background-color);
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    width: 90%;
+    max-width: 1200px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    height: calc(100% - 100px);
+}
+
+/* Left column for code display */
+.code-column {
+    width: 50%;
+    padding-right: 20px;
+    font-size: 1.2em;
+}
+
+.code-column h2 {
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+/* Textarea for code editor */
+.code-column textarea {
+    width: 100%;
+    height: 400px;
+    padding: 15px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 1.1em;
+    border: none;
+    overflow-y: scroll;
+    resize: none;
+}
+
+/* Right column for console and button */
+.right-column {
+    width: 50%;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.run-button {
+    padding: 10px 20px;
+    background-color: var(--var-primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    height: 50px;
+    transition: background-color 0.3s;
+}
+
+.run-button:hover {
+    background-color: var(--var-offset-color)
+}
+
+/* User Input Field */
+.input-field {
+    margin-top: 15px;
+    width: 50%;
+    height: 60px;
+    margin-bottom: 120px;
+}
+
+.input-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+
+.input-field input {
+    padding: 10px;
+    font-size: 1.1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 50%;
+
+}
+
+/* Console Output Area */
+.console {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    font-size: 1.2em;
+    height: 100%;
+    max-height: 400px;
+    overflow-y: scroll;
+    white-space: pre-wrap;
+    font-family: monospace;
+    margin-top: 15px;
+}
+
+.console:focus {
+    outline: none;
+}
