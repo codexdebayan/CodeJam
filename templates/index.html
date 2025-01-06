@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">    
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
@@ -18,6 +18,8 @@
             --var-primary-color: #23cffb;
             --var-offset-color: #00b4e6;
             --var-background-color: #f5f5f5;
+            --var-text-color: #333;
+            --var-text-color-light: #666;
         }
 
 
@@ -31,7 +33,7 @@
 
         h1 {
             margin-top: 20px;
-            color: #333;
+            color: var(--var-text-color);
         }
 
         .container {
@@ -41,15 +43,16 @@
             flex-wrap: wrap;
             gap: 20px;
             padding: 20px;
+
         }
 
         .section {
             flex: 1;
-            min-width: 250px;
+            min-width: 30vw;
             /* Minimum width for responsiveness */
-            max-width: 500px;
+            max-width: 35vw;
             /* Maximum width for larger screens */
-            height: 300px;
+            height: 30vh;
             /* Fixed height for squares */
             background-color: #fff;
             border-radius: 8px;
@@ -76,8 +79,18 @@
             justify-content: center;
         }
 
+        .section a p {
+            color : var(--var-text-color-light);
+        }
+
+        .section a img {
+            max-width: 100%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+
         .section a:hover {
-            background-color: var(--var-primary-color);
+            background-color: hsl(69, 100%, 77%);
             color: white;
             scale: 1.05;
             transition: ease 0.8s;
@@ -87,7 +100,7 @@
             display: flex;
             align-items: center;
             margin: 40px auto;
-            max-width: 70%;
+            max-width: 70vw;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
@@ -104,13 +117,13 @@
         }
 
         .about-me h2 {
-            color: #333;
+            color: var(--var-text-color);
             margin-bottom: 10px;
             margin-top: 0;
         }
 
         .about-me p {
-            color: #666;
+            color: var(--var-text-color-light);
             line-height: 1.6;
             margin: 0;
         }
@@ -127,9 +140,7 @@
 </head>
 
 <body>
-    {% include 'codespace_modal.html' %}
-    {% include 'QuestionCrafter.html' %}
-    <h1>Welcome to Code-Jam</h1>
+    <h1>Welcome to CodeJam</h1>
     <!-- About Me Section -->
     <div class="about-me">
         <img src="/static/photo.jpg" alt="Profile Picture">
@@ -145,17 +156,45 @@
     <div class="container">
         <!-- SQL Section -->
         <div class="section">
-            <a href="/sql"><img src="/static/sql.png" height="200px"></a>
+            <a href="/sql"><img src="/static/sql.png" height="200px">
+                <p>
+                    <Strong>SQL Projects</Strong>
+                </p>
+            </a>
         </div>
 
         <!-- Python Section -->
         <div class="section">
-            <a href="/python"><img src="/static/python.png" alt="" height="200px"></a>
+            <a href="/python"><img src="/static/python.png" alt="" height="200px">
+                <p>
+                    <Strong>Python Projects</Strong>
+                </p>
+            </a>
+        </div>
+    </div>
+    <div class="container">
+        <!-- SQL Section -->
+        <div class="section">
+            <a href="/codespace"><img src="/static/codespace.png" height="200px">
+                <p>
+                    <Strong>Codespace</Strong>
+                </p>
+            </a>
+        </div>
+
+        <!-- Python Section -->
+        <div class="section">
+            <a href="/genai"><img src="/static/genai.png" alt="" height="200px">
+                <p>
+                    <Strong>QuestionCrafter</Strong>
+                </p>
+            </a>
         </div>
     </div>
 
     <!-- Include the shortcut modal -->
     {% include 'shortcut_modal.html' %}
+
 </body>
 
 </html>

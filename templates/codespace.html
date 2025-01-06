@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">    
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
@@ -81,6 +81,8 @@
 <body>
     <!-- Container for sections -->
     {% include 'home_modal.html' %}
+    <!-- Include the back button -->
+    {% include 'back_modal.html' %}
     <h1>Choose terminal</h1>
     <div class="container">
         <!-- SQL Section -->
@@ -97,4 +99,5 @@
     <!-- Include the shortcut modal -->
     {% include 'shortcut_modal.html' %}
 </body>
+
 </html>
