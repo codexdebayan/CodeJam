@@ -20,12 +20,12 @@ if not api_key:
 genai.configure(api_key=api_key)
 modal = genai.GenerativeModel("gemini-1.5-flash")
 
-# Database credentials
-DB_HOST = "db-for-codejam.cxq60qsiclw5.ap-south-1.rds.amazonaws.com"
-DB_USER = "admin"
-DB_PASSWORD = "root1234"
-DB_NAME = "db_for_codejam"
-DB_FOR_CODESPACE = "db_for_codespace"
+# Database connection
+db_host = os.getenv("DB_HOST")
+db_user = os.getenv("DB_USER")
+db_password = os.getenv("DB_PASSWORD")
+db_name = os.getenv("DB_NAME")
+db_for_codespace = os.getenv("DB_FOR_CODESPACE")
 
 app = Flask(__name__)
 CORS(app)
