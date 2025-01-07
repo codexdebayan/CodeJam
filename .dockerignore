@@ -1,0 +1,49 @@
+# Ignore Python cache files
+/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore environment files
+.env
+
+# Ignore virtual environments
+/venv/
+env/
+*.venv
+
+
+
+# Ignore Docker files and logs
+*.log
+docker-compose.override.yml
+
+# Ignore version control folders
+.git
+.gitignore
+
+# Ignore node_modules (if your project uses Node.js)
+node_modules/
+
+# Ignore IDE-specific files
+*.swp
+*.swo
+*.idea/
+.vscode/
+
+# Ignore build artifacts
+*.out
+*.exe
+*.o
+*.class
+*.so
+
+# Ignore temporary files
+*.tmp
+*.bak
+*.old
+*.orig
+*.~*
+.DS_Store
+Thumbs.db
+sql_runner.py
