@@ -4,12 +4,10 @@
 *.pyo
 *.pyd
 
-# Ignore environment files
-.env
+
 
 # Ignore virtual environments
 /venv/
-env/
 *.venv
 
 
