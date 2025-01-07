@@ -19,7 +19,6 @@ COPY queries /app/queries
 COPY src /app/src
 COPY static /app/static
 COPY templates /app/templates
-COPY __pycache__ /app/__pycache__
 
 # Copy the .env and other necessary files to the container
 COPY .env /app/.env
