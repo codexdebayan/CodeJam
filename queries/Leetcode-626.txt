@@ -19,4 +19,4 @@
    else coalesce(lead(student) over(order by id), 
  student)
  end as student
- from seat;
+ from Seat;

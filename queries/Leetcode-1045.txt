@@ -22,6 +22,6 @@
 -- INSERT INTO Customer (customer_id, product_key) -- VALUES (1, 6);
 
 select customer_id 
-from customer
+from Customer
 group by customer_id
-having count(distinct product_key) = (select count(*) from product);
+having count(distinct product_key) = (select count(*) from Product);

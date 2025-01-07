@@ -2,13 +2,13 @@ import os
 import subprocess
 import tempfile
 from flask import Flask, render_template, jsonify, abort, request
-from sql_runner import DatabaseConnection, QueryExecutor
 from flask_cors import CORS
 from dotenv import load_dotenv
 import google.generativeai as genai
 import os
 import re
 from pypdf import PdfReader
+from sql_runner import DatabaseConnection, QueryExecutor
 
 
 load_dotenv()
@@ -21,10 +21,10 @@ genai.configure(api_key=api_key)
 modal = genai.GenerativeModel("gemini-1.5-flash")
 
 # Database credentials
-DB_HOST = "localhost"
-DB_USER = "root"
-DB_PASSWORD = "root"
-DB_NAME = "db_for_code_jam"
+DB_HOST = "db-for-codejam.cxq60qsiclw5.ap-south-1.rds.amazonaws.com"
+DB_USER = "admin"
+DB_PASSWORD = "root1234"
+DB_NAME = "db_for_codejam"
 DB_FOR_CODESPACE = "db_for_codespace"
 
 app = Flask(__name__)

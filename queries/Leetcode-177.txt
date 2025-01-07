@@ -9,17 +9,28 @@
 -- (2, 200),
 -- (3, 300);
 
+-- DELIMITER $$
 
---CREATE FUNCTION getNthHighestSalary(N INT) RETURNS 
--- INT
+-- CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
 -- BEGIN
- 
--- SET N=N-1;
- 
--- RETURN (
---      SELECT DISTINCT salary FROM Employee_177 ORDER -- BY salary DESC
---     LIMIT 1 OFFSET N      
--- );
--- END;
+--     DECLARE result INT;
+
+--     IF N <= 0 THEN
+--         RETURN NULL;
+--     END IF;
+
+--     SELECT DISTINCT salary
+--     INTO result
+--     FROM Employee_177
+--     ORDER BY salary DESC
+--     LIMIT 1 OFFSET N - 1;
+
+--    
+--     RETURN result;
+
+-- END$$
+
+-- DELIMITER ;
+
 
 SELECT * FROM Employee_177;
