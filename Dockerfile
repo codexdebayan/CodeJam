@@ -23,6 +23,7 @@ COPY templates /app/templates
 # Copy the .env and other necessary files to the container
 COPY .env /app/.env
 COPY app.py /app/app.py
+Copy sql_runner.py /app/sql_runner.py
 
 # Expose the Flask default port
 EXPOSE 5000
