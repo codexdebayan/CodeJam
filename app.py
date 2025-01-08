@@ -2,13 +2,13 @@ import os
 import subprocess
 import tempfile
 from flask import Flask, render_template, jsonify, abort, request
+from sql_runner import DatabaseConnection, QueryExecutor
 from flask_cors import CORS
 from dotenv import load_dotenv
 import google.generativeai as genai
 import os
 import re
 from pypdf import PdfReader
-from sql_runner import DatabaseConnection, QueryExecutor
 
 
 load_dotenv()
@@ -20,23 +20,23 @@ if not api_key:
 genai.configure(api_key=api_key)
 modal = genai.GenerativeModel("gemini-1.5-flash")
 
-# Database connection
-db_host = os.getenv("DB_HOST")
-db_user = os.getenv("DB_USER")
-db_password = os.getenv("DB_PASSWORD")
-db_name = os.getenv("DB_NAME")
-db_for_codespace = os.getenv("DB_FOR_CODESPACE")
+# Database credentials
+DB_HOST = os.getenv("DB_HOST")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_NAME = os.getenv("DB_NAME")
+DB_FOR_CODESPACE = os.getenv("DB_FOR_CODESPACE")
 
 app = Flask(__name__)
 CORS(app)
 
 # Dictionary of projects
 python_projects = {
-    "anti-html": "Write a program anti_html.py that takes a URL as an argument, downloads the HTML from the web, and prints it after stripping HTML tags.",
     "classes-and-objects": "Define a class Person and its two child classes: Male and Female. All classes have a method get_gender which can print Male for Male class and Female for Female Class.",
-    "data-manipulation-problem": "A problem on data manipulation using Python.",
     "map-and-lambda-function": "Write a program that can map() to make a list whose elements are squares of numbers between 1 and 20 (both included).",
     "set-and-its-usage": "With a given list [12,24,35,24,88,120,155,88,120,155], write a program to print this list after removing all duplicate values with original order reserved.",
+    "anti-html": "Write a program anti_html.py that takes a URL as an argument, downloads the HTML from the web, and prints it after stripping HTML tags.",        
+    "data-manipulation-problem": "A problem on data manipulation using Python.",
     "xlsx-to-csv-file-converter": "Converting XLSX files to CSV using Python.",
 }
 
@@ -330,6 +330,10 @@ def extract_text_from_pdf(file):
 
 
 prompt_templates = {
+    "Any": """
+    
+    """,
+    
     "MCQ": """
         You are a question generator. Create 10 multiple-choice questions based on the provided text.
         Format each question as follows:
@@ -376,15 +380,18 @@ def generate():
             return jsonify({"msg": "Input text or PDF file is required!"}), 400
 
         if pdf_file:
-            input_text = extract_text_from_pdf(pdf_file)
+            prompt_text = extract_text_from_pdf(pdf_file)
 
         prompt_template = prompt_templates.get(option)
         if not prompt_template:
             return jsonify({"message": "Invalid option selected"}), 400
+        
+        if input_text and pdf_file:
+            prompt = input_text
+        else:
+            prompt = prompt_template
 
-        prompt = prompt_template
-
-        response = get_gemini_response(input_text, prompt)
+        response = get_gemini_response(prompt_text , prompt)
 
         # Make sentences starting with ** bold
         formatted_response = response.replace("\n", "<br>").replace(". ", ".<br><br>")
